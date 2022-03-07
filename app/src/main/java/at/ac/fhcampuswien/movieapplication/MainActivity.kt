@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -26,10 +28,27 @@ class MainActivity : ComponentActivity() {
                     //modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    MovieRow(movie = "Harry Potter")
+                    MainContent()
                 }
             }
         }
+    }
+}
+
+@Composable
+fun MainContent(movies: List<String> = listOf("Harry Potter", "Marry Poppins", "Terminator", "LotR", "In Bruges")){
+    LazyColumn {
+        // item { Text(text = "Header") }   // add a single composable to LazyColumn
+
+        items(items = movies) { movie ->    // add a list of composables to LazyColumn
+            MovieRow(movie = movie)         // render MovieRow composable for each item
+        }
+        /*
+        itemsIndexed(movies){ index, movie ->   // add a list of composables with index
+            MovieRow(movie)
+        }
+         */
+
     }
 }
 
@@ -46,7 +65,8 @@ fun MovieRow(movie: String) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Surface(modifier = Modifier
                 .size(100.dp)
-                .padding(12.dp)
+                .padding(12.dp),
+                elevation = 6.dp
             ) {
                 Icon(imageVector = Icons.Default.AccountBox, contentDescription = "movie pic")
             }
@@ -61,6 +81,6 @@ fun MovieRow(movie: String) {
 @Composable
 fun DefaultPreview() {
     MovieApplicationTheme {
-        MovieRow("Marry Poppins")
+        MainContent()
     }
 }
