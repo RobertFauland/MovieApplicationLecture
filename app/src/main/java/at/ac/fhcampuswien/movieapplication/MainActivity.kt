@@ -16,6 +16,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import at.ac.fhcampuswien.movieapplication.models.Movie
+import at.ac.fhcampuswien.movieapplication.models.getMovies
 import at.ac.fhcampuswien.movieapplication.ui.theme.MovieApplicationTheme
 
 class MainActivity : ComponentActivity() {
@@ -28,7 +30,7 @@ class MainActivity : ComponentActivity() {
                     //modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    MainContent()
+                    MainContent(getMovies())
                 }
             }
         }
@@ -36,7 +38,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MainContent(movies: List<String> = listOf("Harry Potter", "Marry Poppins", "Terminator", "LotR", "In Bruges")){
+fun MainContent(movies: List<Movie> = getMovies()){
     LazyColumn {
         // item { Text(text = "Header") }   // add a single composable to LazyColumn
 
@@ -53,7 +55,7 @@ fun MainContent(movies: List<String> = listOf("Harry Potter", "Marry Poppins", "
 }
 
 @Composable
-fun MovieRow(movie: String) {
+fun MovieRow(movie: Movie) {
     Card(
         modifier = Modifier
             .padding(4.dp)
@@ -71,7 +73,11 @@ fun MovieRow(movie: String) {
                 Icon(imageVector = Icons.Default.AccountBox, contentDescription = "movie pic")
             }
 
-            Text(text = movie, style = MaterialTheme.typography.h6)
+            Column {
+                Text(text = movie.title, style = MaterialTheme.typography.h6)
+                Text(text = "Director: ${movie.director}", style = MaterialTheme.typography.caption)
+                Text(text = "Released: ${movie.year}", style = MaterialTheme.typography.caption)
+            }
         }
 
     }
