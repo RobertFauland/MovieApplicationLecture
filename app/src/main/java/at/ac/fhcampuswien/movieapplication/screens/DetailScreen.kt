@@ -2,8 +2,9 @@ package at.ac.fhcampuswien.movieapplication.screens
 
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavController
 
 @Composable
-fun DetailScreen(){
-    Text(text = "Hello detailscreen")
+fun DetailScreen(navController: NavController, movieId: String?){
+    Text(text = "Hello detailscreen $movieId")
 }
