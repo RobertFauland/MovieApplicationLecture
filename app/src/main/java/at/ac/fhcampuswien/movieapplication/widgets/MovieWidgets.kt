@@ -1,5 +1,6 @@
 package at.ac.fhcampuswien.movieapplication.widgets
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -16,12 +17,16 @@ import at.ac.fhcampuswien.movieapplication.models.getMovies
 
 @Preview
 @Composable
-fun MovieRow(movie: Movie = getMovies()[0]) {
+fun MovieRow(
+    movie: Movie = getMovies()[0],
+    onItemClick: (String) -> Unit = {}) {
+
     Card(
         modifier = Modifier
             .padding(4.dp)
             .fillMaxWidth()
-            .height(130.dp),
+            .height(130.dp)
+            .clickable { onItemClick(movie.id) },
         shape = RoundedCornerShape(corner = CornerSize(16.dp)),
         elevation = 6.dp
     ) {

@@ -1,5 +1,6 @@
 package at.ac.fhcampuswien.movieapplication.screens
 
+import android.util.Log
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Scaffold
@@ -19,7 +20,9 @@ fun HomeScreen(){
 fun MainContent(movies: List<Movie> = getMovies()){
     LazyColumn {
         items(movies){ movie ->
-            MovieRow(movie)
+            MovieRow(movie) { movieId ->
+                Log.d("MainContent", "My callback value: $movieId")
+            }
         }
 
         /*
