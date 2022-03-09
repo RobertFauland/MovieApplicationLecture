@@ -1,19 +1,17 @@
 package at.ac.fhcampuswien.movieapplication.screens
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import at.ac.fhcampuswien.movieapplication.models.Movie
 import at.ac.fhcampuswien.movieapplication.models.getMovies
+import at.ac.fhcampuswien.movieapplication.widgets.HorizontalScrollableImageView
 import at.ac.fhcampuswien.movieapplication.widgets.MovieRow
+import at.ac.fhcampuswien.movieapplication.widgets.SimpleTopAppBar
 
 fun filterMovie(movieId: String?): Movie {
     return getMovies().filter { it.id == movieId}[0]
@@ -25,20 +23,8 @@ fun DetailScreen(navController: NavController, movieId: String?){
 
     Scaffold(
         topBar = {
-            TopAppBar(elevation = 3.dp) {
-                Row() {
-                    Icon(imageVector = Icons.Default.ArrowBack,
-                        contentDescription = "Arrow back",
-                        modifier = Modifier.clickable {
-                            navController.popBackStack()    // go back to last screen
-                        }
-                    )
-
-                    Spacer(modifier = Modifier.width(20.dp))
-
-                    Text(text = movie.title)
-                }
-
+            SimpleTopAppBar(arrowBackClicked = { navController.popBackStack() }) {
+                Text(text = movie.title)
             }
         }
     ) {
@@ -66,6 +52,8 @@ fun MainContent(movie: Movie){
             Divider()
 
             Text(text = "Movie Images", style = MaterialTheme.typography.h5)
+
+            HorizontalScrollableImageView(movie = movie)
         }
     }
 }
