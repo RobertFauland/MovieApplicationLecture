@@ -11,6 +11,8 @@ import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.*
@@ -27,12 +29,34 @@ import at.ac.fhcampuswien.movieapplication.models.getMovies
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 
+@Preview(showBackground = true)
+@Composable
+fun FavoriteIcon(
+    movie: Movie = getMovies()[0],
+    isFav: Boolean = false,
+    onFavClicked: (Movie) -> Unit = {},
+){
+    IconButton(
+        modifier = Modifier.width(80.dp),
+        onClick = { onFavClicked(movie) }
+    ) {
+        Icon(
+            tint = MaterialTheme.colors.secondary,
+            imageVector =
+            if (isFav) Icons.Default.Favorite
+            else Icons.Default.FavoriteBorder,
+            contentDescription = "add to favorites")
+    }
+}
+
 @OptIn(ExperimentalAnimationApi::class)
 @Preview
 @Composable
 fun MovieRow(
     movie: Movie = getMovies()[0],
-    onItemClick: (String) -> Unit = {}) {
+    onItemClick: (String) -> Unit = {},
+    content: @Composable () -> Unit = {}
+    ) {
 
     var expanded by remember {
         mutableStateOf(false)
@@ -47,67 +71,80 @@ fun MovieRow(
         shape = RoundedCornerShape(corner = CornerSize(16.dp)),
         elevation = 6.dp) {
 
-        Row(verticalAlignment = Alignment.CenterVertically){
+        Column() {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ){
 
-            Surface(modifier = Modifier
-                .padding(12.dp)
-                .size(100.dp)) {
+                Surface(modifier = Modifier
+                    .padding(12.dp)
+                    .size(100.dp)) {
 
-                AsyncImage(
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .data(movie.images[0])
-                        .crossfade(true)
-                        .build(),
-                    contentDescription = "Movie poster",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier.clip(CircleShape)
-                )
+                    AsyncImage(
+                        model = ImageRequest.Builder(LocalContext.current)
+                            .data(movie.images[0])
+                            .crossfade(true)
+                            .build(),
+                        contentDescription = "Movie poster",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.clip(CircleShape)
+                    )
+                }
+
+                Column(modifier = Modifier
+                    .padding(4.dp)
+                    .widthIn(200.dp, 200.dp)) {
+                    Text(text = movie.title,
+                        style = MaterialTheme.typography.h6)
+
+                    Text(text = "Director ${movie.director}",
+                        style = MaterialTheme.typography.caption)
+
+                    Text(text = "Released: ${movie.year}",
+                        style = MaterialTheme.typography.caption)
+
+                    AnimatedVisibility(visible = expanded) {
+                        Column {
+                            Text(text = "Plot: ${movie.plot}", style = MaterialTheme.typography.caption)
+
+                            Divider(modifier = Modifier.padding(3.dp))
+
+                            Text(text = "Genre: ${movie.genre}", style = MaterialTheme.typography.caption)
+                            Text(text = "Actors: ${movie.actors}", style = MaterialTheme.typography.caption)
+                            Text(text = "Rating: ${movie.rating}", style = MaterialTheme.typography.caption)
+                        }
+                    }
+
+
+                    Icon(imageVector =
+                    if (expanded) Icons.Filled.KeyboardArrowDown
+                    else Icons.Filled.KeyboardArrowUp,
+                        contentDescription = "expand",
+                        modifier = Modifier
+                            .size(25.dp)
+                            .clickable {
+                                expanded = !expanded
+                            },
+                        tint = Color.DarkGray)
+                }
+
+                content()
                 /*
-                Image(
-                    painter = rememberImagePainter(data = movie.images[0],
-                        builder = {
-                            transformations(CircleCropTransformation())
-                        }),
-                    contentDescription = "Movie poster")
+                IconButton(
+                    modifier = Modifier.width(80.dp),
+                    onClick = { onFavClicked(movie) }
+                ) {
+                    Icon(
+                        tint = MaterialTheme.colors.secondary,
+                        imageVector =
+                        if (isFav) Icons.Default.Favorite
+                        else Icons.Default.FavoriteBorder,
+                        contentDescription = "add to favorites")
+                }
 
                  */
             }
-
-            Column(modifier = Modifier.padding(4.dp)) {
-                Text(text = movie.title,
-                    style = MaterialTheme.typography.h6)
-
-                Text(text = "Director ${movie.director}",
-                    style = MaterialTheme.typography.caption)
-
-                Text(text = "Released: ${movie.year}",
-                    style = MaterialTheme.typography.caption)
-
-                AnimatedVisibility(visible = expanded) {
-                    Column {
-                        Text(text = "Plot: ${movie.plot}", style = MaterialTheme.typography.caption)
-
-                        Divider(modifier = Modifier.padding(3.dp))
-
-                        Text(text = "Genre: ${movie.genre}", style = MaterialTheme.typography.caption)
-                        Text(text = "Actors: ${movie.actors}", style = MaterialTheme.typography.caption)
-                        Text(text = "Rating: ${movie.rating}", style = MaterialTheme.typography.caption)
-                    }
-                }
-
-
-                Icon(imageVector =
-                if (expanded) Icons.Filled.KeyboardArrowDown
-                else Icons.Filled.KeyboardArrowUp,
-                    contentDescription = "expand",
-                    modifier = Modifier
-                        .size(25.dp)
-                        .clickable {
-                            expanded = !expanded
-                        },
-                    tint = Color.DarkGray)
-            }
-
         }
     }
 }

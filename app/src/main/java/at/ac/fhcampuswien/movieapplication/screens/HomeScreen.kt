@@ -17,10 +17,12 @@ import androidx.navigation.NavController
 import at.ac.fhcampuswien.movieapplication.models.Movie
 import at.ac.fhcampuswien.movieapplication.models.getMovies
 import at.ac.fhcampuswien.movieapplication.navigation.MovieScreens
+import at.ac.fhcampuswien.movieapplication.viewmodels.FavoritesViewModel
+import at.ac.fhcampuswien.movieapplication.widgets.FavoriteIcon
 import at.ac.fhcampuswien.movieapplication.widgets.MovieRow
 
 @Composable
-fun HomeScreen(navController: NavController){
+fun HomeScreen(navController: NavController, viewModel: FavoritesViewModel){
     var showMenu by remember { mutableStateOf(false) }
 
     Scaffold(topBar = {
@@ -46,27 +48,29 @@ fun HomeScreen(navController: NavController){
             }
         )
     }) {
-        MainContent(navController = navController)
+        MainContent(navController = navController, favoritesViewModel = viewModel)
     }
 }
 
 @Composable
-fun MainContent(navController: NavController, movies: List<Movie> = getMovies()){
+fun MainContent(navController: NavController, favoritesViewModel: FavoritesViewModel, movies: List<Movie> = getMovies()){
     LazyColumn {
         items(movies){ movie ->
-            MovieRow(movie) { movieId ->
-                //Log.d("MainContent", "My callback value: $movieId")
-                navController.navigate(MovieScreens.DetailScreen.name+"/$movieId")
+            MovieRow(
+                movie = movie,
+                onItemClick = { movieId -> navController.navigate(MovieScreens.DetailScreen.name+"/$movieId")}
+            ) {
+                FavoriteIcon(
+                    movie = movie,
+                    isFav = favoritesViewModel.isFavorite(movie)
+                ){ m ->
+                    if(favoritesViewModel.isFavorite(m)){
+                        favoritesViewModel.removeFromFavorites(m)
+                    } else {
+                        favoritesViewModel.addToFavorites(m)
+                    }
+                }
             }
         }
-
-        /*
-        item(){
-            Text(text = "Header")
-        }
-        items(5){
-            Text(text = "mytext")
-        }
-         */
     }
 }
