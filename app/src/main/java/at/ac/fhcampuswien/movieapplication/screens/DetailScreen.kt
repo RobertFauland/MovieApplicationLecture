@@ -9,6 +9,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import at.ac.fhcampuswien.movieapplication.models.Movie
 import at.ac.fhcampuswien.movieapplication.models.getMovies
+import at.ac.fhcampuswien.movieapplication.viewmodels.FavoritesViewModel
+import at.ac.fhcampuswien.movieapplication.widgets.FavoriteIcon
 import at.ac.fhcampuswien.movieapplication.widgets.HorizontalScrollableImageView
 import at.ac.fhcampuswien.movieapplication.widgets.MovieRow
 import at.ac.fhcampuswien.movieapplication.widgets.SimpleTopAppBar
@@ -18,7 +20,7 @@ fun filterMovie(movieId: String?): Movie {
 }
 
 @Composable
-fun DetailScreen(navController: NavController, movieId: String?){
+fun DetailScreen(navController: NavController, favoritesViewModel: FavoritesViewModel, movieId: String?){
     val movie = filterMovie(movieId = movieId)
 
     Scaffold(
@@ -28,12 +30,12 @@ fun DetailScreen(navController: NavController, movieId: String?){
             }
         }
     ) {
-        MainContent(movie = movie)
+        MainContent(movie = movie, favoritesViewModel)
     }
 }
 
 @Composable
-fun MainContent(movie: Movie){
+fun MainContent(movie: Movie, favoritesViewModel: FavoritesViewModel){
     Surface(
         modifier = Modifier
             .fillMaxWidth()
@@ -45,7 +47,18 @@ fun MainContent(movie: Movie){
             verticalArrangement = Arrangement.Top
         ) {
 
-            MovieRow(movie = movie)
+            MovieRow(movie = movie) {
+                FavoriteIcon(
+                    movie = movie,
+                    isFav = favoritesViewModel.isFavorite(movie)
+                ){ m ->
+                    if(favoritesViewModel.isFavorite(m)){
+                        favoritesViewModel.removeFromFavorites(m)
+                    } else {
+                        favoritesViewModel.addToFavorites(m)
+                    }
+                }
+            }
 
             Spacer(modifier = Modifier.height(8.dp))
 

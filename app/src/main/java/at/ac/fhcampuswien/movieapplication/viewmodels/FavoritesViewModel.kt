@@ -10,6 +10,7 @@ import at.ac.fhcampuswien.movieapplication.models.Movie
         val favoriteMovies: List<Movie>
             get() = _favoriteMovies
 
+
         fun addToFavorites(movie: Movie) {
             if(!exists(movie = movie)){
                 _favoriteMovies.add(movie)

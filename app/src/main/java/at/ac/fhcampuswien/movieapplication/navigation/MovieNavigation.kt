@@ -35,6 +35,7 @@ fun MovieNavigation(){
 
             DetailScreen(
                 navController = navController,
+                favoritesViewModel,
                 movieId = navBackStackEntry.arguments?.getString("movieId") // pass the value of movieId argument to the DetailScreen composable
             )
         }
