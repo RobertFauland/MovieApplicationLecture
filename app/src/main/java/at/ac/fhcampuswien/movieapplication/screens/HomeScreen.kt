@@ -22,7 +22,8 @@ import at.ac.fhcampuswien.movieapplication.widgets.FavoriteIcon
 import at.ac.fhcampuswien.movieapplication.widgets.MovieRow
 
 @Composable
-fun HomeScreen(navController: NavController, viewModel: FavoritesViewModel){
+fun HomeScreen(navController: NavController,
+               viewModel: FavoritesViewModel){
     var showMenu by remember { mutableStateOf(false) }
 
     Scaffold(topBar = {

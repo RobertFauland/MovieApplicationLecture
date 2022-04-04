@@ -28,7 +28,7 @@ fun DetailScreen(navController: NavController, favoritesViewModel: FavoritesView
             SimpleTopAppBar(arrowBackClicked = { navController.popBackStack() }) {
                 Text(text = movie.title)
             }
-        }
+        },
     ) {
         MainContent(movie = movie, favoritesViewModel)
     }

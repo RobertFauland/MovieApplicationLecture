@@ -7,6 +7,7 @@ import at.ac.fhcampuswien.movieapplication.models.Movie
     class FavoritesViewModel : ViewModel() {
 
         private val _favoriteMovies = mutableStateListOf<Movie>() // mutableListOf<Movie>()
+
         val favoriteMovies: List<Movie>
             get() = _favoriteMovies
 
