@@ -16,9 +16,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         Log.i("MainActivity", "onCreate")
 
-
         setContent {
-           // val vm2: FavoritesViewModel = viewModel()
             MovieApplicationTheme {
                 Surface(
                     color = MaterialTheme.colors.background

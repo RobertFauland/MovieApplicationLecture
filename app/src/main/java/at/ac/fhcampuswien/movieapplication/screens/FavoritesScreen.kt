@@ -18,7 +18,6 @@ import at.ac.fhcampuswien.movieapplication.widgets.SimpleTopAppBar
 
 @Composable
 fun FavoritesScreen(navController: NavController, viewModel: FavoritesViewModel){
-    //
     Scaffold(topBar = {
         SimpleTopAppBar(arrowBackClicked = { navController.popBackStack() }) {
             Text(text = "My Favorite Movies")

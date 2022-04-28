@@ -130,6 +130,7 @@ fun MovieRow(
                 }
 
                 content()
+
                 /*
                 IconButton(
                     modifier = Modifier.width(80.dp),

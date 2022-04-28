@@ -54,7 +54,9 @@ fun HomeScreen(navController: NavController,
 }
 
 @Composable
-fun MainContent(navController: NavController, favoritesViewModel: FavoritesViewModel, movies: List<Movie> = getMovies()){
+fun MainContent(navController: NavController,
+                favoritesViewModel: FavoritesViewModel,
+                movies: List<Movie> = getMovies()){
     LazyColumn {
         items(movies){ movie ->
             MovieRow(
